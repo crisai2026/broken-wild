@@ -4,7 +4,9 @@ A roguelite, open-world RPG prototype where machines and nature share a world wi
 
 ## Play
 
-Open `index.html` in a desktop browser. Everything is in that one file (HTML, CSS, JavaScript). Progress is saved in the browser's localStorage.
+https://crisai2026.github.io/broken-wild/
+
+Or open `index.html` in a desktop browser. Everything is in that one file (HTML, CSS, JavaScript). Progress is saved in the browser's localStorage.
 
 ## Controls
 
