@@ -1,6 +1,6 @@
-# Broken Wild (prototype v0.1)
+# Realm of Physics and Electronics (prototype v0.1)
 
-A roguelite, open-world RPG prototype where machines and nature share a world with broken physics. Placeholder name, art and numbers.
+A roguelite, open-world RPG prototype where machines and nature share a world with broken physics. Placeholder art and numbers.
 
 ## Play
 
@@ -27,7 +27,7 @@ Open `index.html` in a desktop browser. Everything is in that one file (HTML, CS
 
 ## Tweaking
 
-Placeholder names and balance values live in the `CONFIG` block at the top of the script in `index.html`.
+The game title, the villain's name and balance values live in the `CONFIG` block at the top of the script in `index.html`.
 
 ## Not built yet
 
