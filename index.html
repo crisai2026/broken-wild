@@ -16,6 +16,7 @@ body{display:flex;align-items:center;justify-content:center;padding:env(safe-are
 .ibtn{position:absolute;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;color:var(--text);padding:0;font-family:inherit;line-height:1}
 .ibtn:hover,.btn:hover{background:var(--panel-hi)}
 .ibtn:focus-visible,.btn:focus-visible,.slot:focus-visible,.node:focus-visible{outline:2px solid var(--warn);outline-offset:1px}
+#power{position:absolute;right:6px;top:34px;max-width:250px;padding:5px 7px;font-size:7px;line-height:12px;pointer-events:none;display:none;color:var(--warn)}
 #bTech{left:6px;top:6px}#bStats{left:6px;top:34px}#bBook{left:6px;top:62px}#bGear{right:6px;top:6px}
 #zoneTag{position:absolute;left:0;right:0;top:7px;text-align:center;font-size:7px;color:#d8e8d0;text-shadow:1px 1px 0 #000;pointer-events:none}
 #zoneTag small{display:block;font-size:6px;color:var(--warn);margin-top:4px}
@@ -24,8 +25,8 @@ body{display:flex;align-items:center;justify-content:center;padding:env(safe-are
 #prompt{position:absolute;left:0;right:0;top:268px;text-align:center;font-size:8px;color:#fff;text-shadow:1px 1px 0 #000,-1px -1px 0 #000;pointer-events:none}
 #recall{position:absolute;left:230px;top:290px;width:180px;display:none;padding:4px;font-size:7px;text-align:center}
 #recall .bar{height:5px;background:#000;margin-top:3px}#recall .fill{height:100%;background:#9a6ae8;width:0}
-#log{position:absolute;left:8px;bottom:6px;width:268px;height:46px;font-size:6px;line-height:9px;background:rgba(0,0,0,.62);border:1px solid #000;padding:3px 4px;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
-#log div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#log{position:absolute;left:8px;bottom:6px;width:268px;height:72px;font-size:6px;line-height:9px;background:rgba(0,0,0,.62);border:1px solid #000;padding:3px 4px;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+#log div{white-space:normal;overflow:hidden}
 #dock{position:absolute;left:402px;top:262px;width:232px;height:92px;pointer-events:none}
 #dock>*{pointer-events:auto}
 #slots{position:absolute;left:0;top:0;display:grid;grid-template-columns:repeat(4,21px);gap:1px;padding:2px;width:90px}
@@ -56,6 +57,26 @@ table{border-collapse:collapse;width:100%}td,th{padding:2px 4px;text-align:left;
 .node{position:absolute;width:18px;height:18px;border:2px solid #000;background:var(--c);cursor:pointer;padding:0;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)}
 .node.done{opacity:.45;cursor:default}.node.sel{outline:2px solid #fff}.node.bad{background:#fff}
 .tbar{height:6px;background:#000;border:1px solid #000;margin:4px 0}.tbar div{height:100%;background:var(--good);width:100%}
+
+.pzinfo{color:var(--dim);margin:0 0 6px}.pzmsg{min-height:12px;margin:6px 0;color:var(--warn)}
+.fuses{display:flex;gap:8px;justify-content:center;margin:8px 0}
+.fuse{width:32px;height:58px;background:#d8d0c0;border:2px solid #000;position:relative;cursor:pointer;padding:0;box-shadow:inset 0 0 0 2px rgba(255,255,255,.4)}
+.fuse i,.socket i{position:absolute;left:0;right:0;height:11px}
+.fuse i:nth-child(1),.socket i:nth-child(1){top:12px}.fuse i:nth-child(2),.socket i:nth-child(2){bottom:12px}
+.fuse.burnt{opacity:.3;cursor:default}
+.socket{width:36px;height:62px;margin:4px auto;border:2px solid #000;background:#1b140e;position:relative}
+.gauge{position:relative;height:22px;background:#150d0a;border:2px solid #000;margin:12px 0}
+.gauge .zone{position:absolute;top:0;bottom:0;background:rgba(122,208,90,.55)}
+.gauge .needle{position:absolute;top:-5px;bottom:-5px;width:4px;background:#fff;margin-left:-2px}
+.debris{position:relative;width:300px;height:150px;margin:6px auto;background:#1b140e;border:2px solid #000;overflow:hidden}
+.debris .ring{position:absolute;left:70px;top:-20px;width:170px;height:170px;border-radius:50%;border:12px dotted #6e4a26;opacity:.8}
+.deb{position:absolute;cursor:pointer;border:2px solid #000;padding:0}
+.deb.shake{animation:shk .25s}@keyframes shk{25%{margin-left:-4px}75%{margin-left:4px}}
+.deb.gone{display:none}
+.lamps,.sws{display:flex;gap:12px;justify-content:center;margin:8px 0}
+.lamp{width:16px;height:16px;border-radius:50%;border:2px solid #000;background:#802018}.lamp.on{background:#7ad05a}
+.sw{width:34px;height:60px;background:#2a2018;border:2px solid #000;position:relative;cursor:pointer;padding:0}
+.sw b{position:absolute;left:5px;right:5px;height:22px;background:#c8452f;border:2px solid #000;top:30px}.sw.on b{top:4px;background:#7ad05a}
 </style>
 </head>
 <body>
@@ -66,6 +87,7 @@ table{border-collapse:collapse;width:100%}td,th{padding:2px 4px;text-align:left;
   <button class="box ibtn" id="bBook" title="Journal (3)" aria-label="Journal">📖</button>
   <button class="box ibtn" id="bGear" title="Menu (Esc)" aria-label="Menu">⚙</button>
   <div id="zoneTag"></div>
+  <div id="power" class="box"></div>
   <div id="boss" class="box"><span id="bossName"></span><div class="bar"><div class="fill" id="bossFill"></div></div></div>
   <div id="prompt"></div>
   <div id="recall" class="box">Recalling to the hub…<div class="bar"><div class="fill" id="recallFill"></div></div></div>
@@ -85,6 +107,7 @@ table{border-collapse:collapse;width:100%}td,th{padding:2px 4px;text-align:left;
     <div class="mod box" id="m-menu" style="width:340px"></div>
     <div class="mod box" id="m-vault" style="width:400px"></div>
     <div class="mod box" id="m-wire" style="width:340px"></div>
+    <div class="mod box" id="m-puz" style="width:360px"></div>
     <div class="mod box" id="m-dead" style="width:400px"></div>
     <div class="mod box" id="m-win" style="width:480px"></div>
   </div>
@@ -102,9 +125,10 @@ const CONFIG={
   hubHealPerSec:14,
   baseSpeed:66, speedPerPoint:5,
   xpUnit:30, techXpUnit:25,
-  enemyCountByZone:[26,50,72,90], terminalsByZone:[9,12,12,8],
+  enemyCountByZone:[26,50,72,90], terminalsByZone:[0,12,12,8],
   zoneRadii:[16,32,48,60],
-  respawnEvery:2.5, nearCap:9
+  respawnEvery:2.5, nearCap:9,
+  breakerPotionEvery:2            // level-1 breakers: a potion on every Nth repair (1 = every breaker)
 };
 
 /* =====================  utils  ===================== */
@@ -130,9 +154,10 @@ function sfx(f,d,type,v,slide){
 /* =====================  save  ===================== */
 const SAVE_KEY='broken-wild-proto-v1';
 function defaultSave(){const c=()=>({xp:0,pot:{hp:0,atk:0,def:0,spd:0,dex:0}});
-  return{v:1,classes:{knight:c(),archer:c(),wizard:c()},techXp:0,vault:Array(12).fill(null),gates:[],terms:[],restored:false,deaths:0,kills:0,bossKills:0}}
+  return{v:1,classes:{knight:c(),archer:c(),wizard:c()},techXp:0,vault:Array(12).fill(null),gates:[],terms:[],devs:[],restored:false,deaths:0,kills:0,bossKills:0}}
 function loadSave(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY));if(s&&s.v===1)return Object.assign(defaultSave(),s)}catch(e){}return defaultSave()}
 let save=loadSave();
+if(save.lv1!==2){save.lv1=2;save.terms=[];save.devs=[];save.gates=[]}
 function persist(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(save))}catch(e){}}
 
 /* =====================  data  ===================== */
@@ -158,7 +183,7 @@ const POT_KEYS=['hp','atk','def','spd','dex','hp','atk','def','spd','dex','tech'
 const STAT_NAMES={hp:'Life',atk:'Attack',def:'Defense',spd:'Speed',dex:'Dexterity'};
 
 const ZONES=[
-  {name:'Mossy Shallows',anom:null,note:'Calm. The machines here still sleep.',floor:['#3d6b3a','#44753f','#386533'],dark:'#2a4d2b'},
+  {name:'Mossy Shallows',anom:null,note:'Calm. The gate out is dead: restore its power.',floor:['#3d6b3a','#44753f','#386533'],dark:'#2a4d2b'},
   {name:'Rusted Grove',anom:'curve',note:'Physics bent: shots curve to the right.',floor:['#44683a','#4d6a36','#3f6035'],dark:'#2f4a2a'},
   {name:'Gearworks',anom:'slip',note:'Low friction: you slide, shots speed up.',floor:['#4a5c58','#51625e','#445551'],dark:'#35433f'},
   {name:'Corrupted Core',anom:'pulse',note:'Pulse fields: shots surge and stall.',floor:['#3f3158','#463763','#392c50'],dark:'#2a2040'}
@@ -182,7 +207,8 @@ const ZONE_SPAWN=[['mossling','mossling','wisp'],['crawler','crawler','wisp','tu
 const W=CONFIG.world,TS=16,C=W/2;
 const T={VOID:0,FLOOR:1,WALL:2,GATE:3,TREE:4,ROCK:5,GEAR:6};
 const tiles=new Uint8Array(W*W),zoneT=new Uint8Array(W*W),gateAt=new Int16Array(W*W).fill(-1);
-const gates=[],terms=[];
+const gates=[],terms=[],gears=[],devs=[],D={},G={};
+let shake=0,chainRot=0,shaftPh=0;
 const HUB={x:C*TS,y:C*TS};
 const BOSSPOS={x:C*TS,y:(C-54)*TS};
 const VAULT={x:C*TS+44,y:C*TS+8};
@@ -202,19 +228,28 @@ function genWorld(){
     for(let j=0;j<4;j++){
       const a=offs[k]+j*Math.PI/2,r=R[k]+0.8;
       const gx=C+Math.cos(a)*r,gy=C+Math.sin(a)*r;
-      const g={id:gates.length,x:gx*TS,y:gy*TS,tx:gx,ty:gy,tier:k+1,open:save.gates.includes(gates.length),cells:[],cd:0};
-      for(let y=Math.floor(gy-3);y<=Math.ceil(gy+3);y++)for(let x=Math.floor(gx-3);x<=Math.ceil(gx+3);x++){
+      // Ring 1 has a single powered door (j===3); its other three gate spots stay solid wall.
+      const isDoor=(k===0&&j===3),isDead=(k===0&&j!==3);
+      const g={id:gates.length,x:gx*TS,y:gy*TS,tx:gx,ty:gy,tier:k+1,open:(!isDoor&&!isDead&&save.gates.includes(gates.length)),door:isDoor,dead:isDead,cells:[],cd:0};
+      if(!isDead)for(let y=Math.floor(gy-3);y<=Math.ceil(gy+3);y++)for(let x=Math.floor(gx-3);x<=Math.ceil(gx+3);x++){
         const i=y*W+x;if(x<0||y<0||x>=W||y>=W)continue;
         if(tiles[i]===T.WALL&&Math.hypot(x+.5-gx,y+.5-gy)<2.4){tiles[i]=T.GATE;gateAt[i]=g.id;g.cells.push(i)}
       }
       gates.push(g);
     }
   }
+  const P_=(ox,oy)=>({tx:C+ox,ty:C+oy,x:(C+ox)*TS,y:(C+oy)*TS});
+  for(const [key,ox,oy] of [['A',-10,-8],['B',-10,8],['C',2,-12.5],['D',12.5,3]]){const q=P_(ox,oy);const g={key,tx:q.tx,ty:q.ty,x:q.x,y:q.y,rot:key==='B'?0.7:0,w:0,jit:0,dir:(key==='A'||key==='D')?1:-1};gears.push(g);G[key]=g}
+  const DV=[['M','lever',-14.6,0,1],['bA','fuse',-12.5,-4,1],['bB','fuse',-12.5,4,2],['S','sync',-8,0,2],['J','jam',-4,-10.25,2],['K','cable',0,10.5,3],
+    ['e1','panel',-3,-5,1],['e2','fuse',4,-9,3],['e3','wire',10,-3,2],['e4','panel',-4,6,2],['e5','wire',5,8,3]];
+  for(const [key,type,ox,oy,diff] of DV){const q=P_(ox,oy);const d={id:devs.length,key,type,diff,ox,oy,tx:q.tx,ty:q.ty,x:q.x,y:q.y+5,done:save.devs.includes(devs.length),cd:0};devs.push(d);D[key]=d}
   const bx=C,by=C-54;
   const nearKeep=(x,y)=>{
     if(Math.hypot(x+.5-C,y+.5-C)<5)return true;
     if(Math.hypot(x+.5-bx,y+.5-by)<8)return true;
-    for(const g of gates)if(Math.hypot(x+.5-g.tx,y+.5-g.ty)<4.6)return true;
+    for(const g of gates)if(!g.dead&&Math.hypot(x+.5-g.tx,y+.5-g.ty)<4.6)return true;
+    for(const gr of gears)if(Math.hypot(x+.5-gr.tx,y+.5-gr.ty)<3.8)return true;
+    for(const d of devs)if(Math.hypot(x+.5-d.tx,y+.5-d.ty)<3.4)return true;
     return false;
   };
   const dens=[0.07,0.10,0.09,0.06];
@@ -234,8 +269,37 @@ function genWorld(){
       terms.push({id:terms.length,tx:x,ty:y,x:x*TS+8,y:y*TS+12,zone:z,done:save.terms.includes(terms.length),cd:0});n++;
     }
   }
+  const dr=gates.find(g=>g.door);dr.open=devs.every(d=>d.done);dr.anim=dr.open?1:0;dr.opening=false;
 }
 genWorld();
+const door=gates.find(g=>g.door);
+const D_TOTAL=devs.length;
+const devDone=()=>devs.reduce((n,d)=>n+(d.done?1:0),0);
+const EK=['e1','e2','e3','e4','e5'];
+const breakersOn=()=>EK.reduce((n,k)=>n+(D[k].done?1:0),0);
+const gearOn={A:()=>D.bA.done,B:()=>D.bB.done,C:()=>D.J.done&&D.bA.done,D:()=>D.K.done&&D.bB.done};
+const REQ={M:()=>true,bA:()=>D.M.done,bB:()=>D.M.done,S:()=>D.bA.done&&D.bB.done};
+const reqOk=d=>d.key in REQ?REQ[d.key]():D.S.done;
+const LOCK={bA:'Dead line. Flip the main lever on the west wall first.',bB:'Dead line. Flip the main lever on the west wall first.',
+  S:'Gears A and B need power first: fix both fuse boxes.',_:'Not yet: sync gears A and B first (circuit between them).'};
+const lockMsg=d=>LOCK[d.key]||LOCK._;
+const DEVINFO={
+ M:{name:'Main power lever',verb:'Pull the main power lever',info:'Every line in the Shallows hangs on this lever. Nothing else works while it is off.',tip:'Throw it.'},
+ bA:{name:'Fuse box A',verb:'Replace the burnt fuse (gear A)',info:'This box feeds the line to gear A. Its fuse has blown.',tip:'Pick the fuse whose two colour bands match the socket, in the same order.'},
+ bB:{name:'Fuse box B',verb:'Replace the burnt fuse (gear B)',info:'This box feeds the line to gear B. Its fuse has blown.',tip:'Pick the fuse whose two colour bands match the socket, in the same order.'},
+ S:{name:'Sync circuit',verb:'Sync gears A and B',info:'Gears A and B turn out of step. Power cannot flow on to the rest of the level until they are in phase.',tip:'Press SYNC when the needle crosses the green band.'},
+ J:{name:'Jammed gear chain',verb:'Clear the jammed gear teeth',info:'Branches and junk are wedged in this chain. It carries power from gear A to gear C.',tip:'Pull out whatever lies on top first.'},
+ K:{name:'Cut power cable',verb:'Rejoin the cut cable',info:'This cable carries power from gear B to gear D. The strands are cut.',tip:'Join each strand to the same colour.'}
+};
+EK.forEach((k,i)=>{const t=D[k].type;DEVINFO[k]={name:'Gate breaker '+(i+1),verb:'Switch on gate breaker '+(i+1),info:'This breaker sits on the gate’s charge line. The gate needs all five on.',
+  tip:t==='panel'?'Set every lamp to green. A switch may do more than one thing.':t==='fuse'?'Match the two colour bands on the socket, in order.':'Join each colour to its match.'}});
+function objective(){
+  if(!D.M.done)return 'Pull the main lever (west wall)';
+  if(!D.bA.done||!D.bB.done)return 'Fix the fuse boxes at gears A and B';
+  if(!D.S.done)return 'Sync gears A and B (between them)';
+  const l=[];if(!D.J.done)l.push('A-C chain');if(!D.K.done)l.push('B-D cable');const b=5-breakersOn();if(b)l.push(b+' breaker'+(b>1?'s':''));
+  return l.length?'Left: '+l.join(', '):'All repaired. Stand clear!';
+}
 function tileAt(tx,ty){return(tx<0||ty<0||tx>=W||ty>=W)?T.VOID:tiles[ty*W+tx]}
 function solidTile(tx,ty){
   if(tx<0||ty<0||tx>=W||ty>=W)return true;const i=ty*W+tx,t=tiles[i];
@@ -331,6 +395,7 @@ function startRun(cls){
   P.hp=maxHp();P.en=100;P.fireCd=0;P.spCd=0;P.inv=1;P.dash=0;P.recall=0;P.lastHit=99;projs=[];P.zone=0;
   running=true;closeModal();dirtyInv=true;revealAround(P.x,P.y);
   log('You arrive at the hub as a '+CLASSES[cls].name+'. Potions drunk earlier still count.','#bde8a0');
+  if(!door.open){log('The gate out of the Shallows is dead. Four gears drive it.','#e8d84a');log('Start at the main lever on the west wall.','#e8d84a')}
   log('Explore in any direction. The north holds '+CONFIG.villain+'.','#e8d84a');
 }
 function die(){
@@ -420,14 +485,17 @@ function onBossDefeated(e){
 let dirtyInv=true,dirtyStats=true;
 function nearestInteract(){
   let best=null,bd=1e9;
-  for(const g of gates){if(g.open)continue;const d=Math.hypot(P.x-g.x,P.y-g.y);if(d<38&&d<bd){bd=d;best={k:'gate',o:g,txt:'[E] Repair gate (tier '+g.tier+')'}}}
+  for(const g of gates){if(g.open||g.opening||g.dead)continue;const d=Math.hypot(P.x-g.x,P.y-g.y);if(d<38&&d<bd){bd=d;
+    best=g.door?{k:'door',o:g,txt:'The gate is dead: '+devDone()+'/'+D_TOTAL+' repairs done. [E] Inspect'}:{k:'gate',o:g,txt:'[E] Repair gate (tier '+g.tier+')'}}}
   for(const t of terms){if(t.done)continue;const d=Math.hypot(P.x-t.x,P.y-t.y);if(d<24&&d<bd){bd=d;best={k:'term',o:t,txt:'[E] Repair dormant machine'}}}
+  for(const v of devs){if(v.done)continue;const d=Math.hypot(P.x-v.x,P.y-v.y);if(d<(v.key==='M'?32:v.key==='J'||v.key==='K'?30:26)&&d<bd){bd=d;
+    best={k:'dev',o:v,txt:reqOk(v)?'[E] '+DEVINFO[v.key].verb:lockMsg(v)}}}
   const dv=Math.hypot(P.x-VAULT.x,P.y-VAULT.y);if(dv<28&&dv<bd){best={k:'vault',txt:'[E] Open the shared Vault'}}
   return best;
 }
 let interact=null;
 function update(dt){
-  time+=dt;P.lastHit+=dt;
+  time+=dt;P.lastHit+=dt;updateSystem(dt);
   const z=zoneAtPx(P.x,P.y);
   if(z!==P.zone||!P._zs){P.zone=z;P._zs=true;const zz=ZONES[z];log('Entered '+zz.name+'. '+(save.restored?'The world is mending.':zz.note),zz.anom&&!save.restored?'#e8d84a':'#bde8a0')}
   const an=anomAt(P.x,P.y);
@@ -465,7 +533,7 @@ function update(dt){
   for(const p of parts){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.94;p.vy*=.94;p.life-=dt}parts=parts.filter(p=>p.life>0);
   for(const f of floats){f.y-=18*dt;f.life-=dt}floats=floats.filter(f=>f.life>0);
   for(const m of motes){m.x-=(P.vx*.02+4)*m.z*dt;m.y+=Math.sin(time+m.ph)*6*dt;if(m.x<-4)m.x=644;if(m.y<-4)m.y=364;if(m.y>364)m.y=-4}
-  for(const g of gates)if(g.cd>0)g.cd-=dt;for(const t of terms)if(t.cd>0)t.cd-=dt;
+  for(const g of gates)if(g.cd>0)g.cd-=dt;for(const t of terms)if(t.cd>0)t.cd-=dt;for(const v of devs)if(v.cd>0)v.cd-=dt;
 }
 for(const k in ETYPES)ETYPES[k].r0=ETYPES[k].r;
 function doSpecial(){
@@ -582,16 +650,21 @@ function updateLoot(dt){
 function interactNow(){
   if(!interact)return;
   if(interact.k==='vault'){openVault();return}
+  if(interact.k==='door'){gateHint();return}
+  if(interact.k==='dev'){const d=interact.o;
+    if(!reqOk(d)){log(lockMsg(d),'#ffcf70');return}
+    if(d.cd>0){log('The circuits are still sparking. Wait a moment.','#ff7a6a');return}
+    openDev(d);return}
   const o=interact.o;
   if(o.cd>0){log('The circuits are still sparking. Wait a moment.','#ff7a6a');return}
   const isGate=interact.k==='gate';
   const tl=effTech();
   const base=isGate?2+o.tier:2+Math.min(o.zone+1,3);
-  const pairs=Math.min(6,base+(isGate?0:0));
+  const pairs=Math.min(6,base);
   const pre=Math.min(Math.max(0,pairs-2),Math.floor((tl-1)/2));
   const time=20+pairs*3+tl*2;
   startWire(isGate?'Repair gate (tier '+o.tier+')':'Repair dormant machine',pairs,pre,time,
-    ()=>{ // success
+    ()=>{
       gainTech(isGate?25*o.tier:18);
       if(isGate){o.open=true;save.gates.push(o.id);for(const i of o.cells)paintMapTile(i);log('The gate grinds open.','#7ad05a');
         for(let k=0;k<2;k++)addLoot(o.x,o.y+14,{potion:pick(POT_KEYS)});addLoot(o.x,o.y+14,{item:rollItem(Math.min(3,o.tier))});}
@@ -602,12 +675,164 @@ function interactNow(){
     ()=>{o.cd=3;P.inv=0;takeDamage(isGate?8:5+(o.zone||0)*2);log('Short circuit! Zapped.','#ff7a6a')}
   );
 }
+
+/* ---------- Level 1 gate system ---------- */
+function gateHint(){
+  const left=D_TOTAL-devDone();
+  log('The gate has two leaves: gear C drives the left, gear D the right.','#bde8a0');
+  log(left+' repairs to go. '+objective()+'.','#ffcf70');
+  if(D.S.done)log('Follow the chain from A, the cable from B and the cables from the five breakers.','#bde8a0');
+}
+function zapDev(d){d.cd=3;P.inv=0;takeDamage(4+d.diff*2);log('Short circuit! Zapped.','#ff7a6a')}
+function gearKick(k){G[k].jit=.8}
+function completeDev(d){
+  d.done=true;save.devs.push(d.id);persist();
+  gainTech(10+d.diff*6);
+  burst(d.x,d.y-8,18,'#7ad05a',60,.7);sfx(700,.3,'triangle',.05,500);floatTxt(d.x,d.y-26,'POWER','#7ad05a');
+  const k=d.key,gl=(m,c)=>log(m,c||'#7ad05a');
+  if(k==='M'){gl('The lever clunks home. Cables glow along the wall.');gl('Gears A and B have lost their fuses.','#ffcf70')}
+  else if(k==='bA'){gearKick('A');gl('Fuse A is in. Gear A shudders and starts to turn.');if(D.bB.done)gl('Both gears turn, out of step. Sync them.','#ffcf70')}
+  else if(k==='bB'){gearKick('B');gl('Fuse B is in. Gear B shudders and starts to turn.');if(D.bA.done)gl('Both gears turn, out of step. Sync them.','#ffcf70')}
+  else if(k==='S'){G.B.rot=-G.A.rot;gearKick('A');gearKick('B');gl('The gears lock into step. Power flows on.');gl('Two links are broken: the A chain, the B cable.','#ffcf70')}
+  else if(k==='J'){gearKick('C');gl('The chain runs free. Gear C turns: the gate’s left leaf has drive.');if(D.K.done)gl('Both leaves have drive.','#ffcf70')}
+  else if(k==='K'){gearKick('D');gl('The cable is whole. Gear D turns: the right leaf has power.');if(D.J.done)gl('Both leaves have drive.','#ffcf70')}
+  else{const n=breakersOn();gl('Breaker '+n+' of 5 on. A charge cell lights on the gate.');if(n===5)gl('The gate’s charge is full.','#ffcf70');
+    if((n-1)%CONFIG.breakerPotionEvery===0)addLoot(d.x,d.y+8,{potion:pick(POT_KEYS)});if(rnd()<.55)addLoot(d.x,d.y+8,{item:rollItem(0)})}
+  if(k==='S'||k==='J'||k==='K')addLoot(d.x,d.y+10,{potion:pick(POT_KEYS)});
+  if((k==='J'||k==='K'||k==='bB')&&rnd()<.6)addLoot(d.x,d.y+10,{item:rollItem(0)});
+  if(devs.every(v=>v.done)&&!door.open&&!door.opening)startGateOpen();
+  else if(!door.open)log(devDone()+' of '+D_TOTAL+' repairs done.','#e8d84a');
+}
+function startGateOpen(){
+  door.opening=true;door.anim=0;
+  log('All four gears are turning together.','#e8d84a');log('The gate groans, then begins to swing open!','#e8d84a');
+  sfx(180,1.2,'sawtooth',.05,220);
+}
+function finishGate(){
+  door.opening=false;door.open=true;door.anim=1;shake=0;for(const i of door.cells)paintMapTile(i);
+  const a=GATE_A,ix=door.x-Math.cos(a)*30,iy=door.y-Math.sin(a)*30;
+  burst(door.x,door.y,40,'#e8d84a',110,1);burst(door.x,door.y,24,'#7ad05a',90,1);sfx(420,.8,'triangle',.06,500);
+  log('The gate swings wide. The Rusted Grove lies beyond.','#7ad05a');
+  for(let k=0;k<3;k++)addLoot(ix,iy,{potion:pick(POT_KEYS)});addLoot(ix,iy,{item:rollItem(1)});
+}
+function updateSystem(dt){
+  const opening=door.opening;
+  for(const g of gears){
+    const on=opening||gearOn[g.key]();
+    let tgt=0;if(on)tgt=opening?4.2:(D.S.done?1.7:(g.key==='A'?1.0:g.key==='B'?.7:1.7));
+    g.w+=(tgt-g.w)*Math.min(1,dt*2.2);g.rot+=g.w*dt*g.dir;
+    if(g.jit>0){g.jit-=dt;g.rot+=(rnd()-.5)*.35}
+  }
+  if(D.S.done)G.B.rot=-G.A.rot;
+  if(D.J.done)chainRot+=G.A.w*dt;
+  shaftPh+=G.C.w*dt*10;
+  if(opening){door.anim=Math.min(1,door.anim+dt/3.6);shake=door.anim<.9?2.4:0;
+    if(rnd()<dt*30)burst(door.x+(rnd()-.5)*34,door.y+(rnd()-.5)*34,3,pick(['#e8d84a','#7ad05a','#9fe0ff']),70,.6);
+    if(door.anim>=1)finishGate()}
+  else shake=Math.max(0,shake-dt*8);
+}
+
+/* ---------- repair interactions ---------- */
+const FC=['#e84b4b','#4bd0e8','#f0d24a','#7ad05a','#c46ae8'];
+const pz={on:false};
+function openDev(d){
+  const I=DEVINFO[d.key];
+  if(d.type==='lever'){sfx(160,.3,'sawtooth',.05,60);completeDev(d);return}
+  if(d.type==='cable'||d.type==='wire'){
+    const pairs=d.diff+2,tl=effTech(),pre=Math.min(Math.max(0,pairs-2),Math.floor((tl-1)/2)),time=20+pairs*3+tl*2;
+    startWire(I.name,pairs,pre,time,()=>completeDev(d),()=>zapDev(d),I.info+' '+I.tip);return}
+  Object.assign(pz,{on:true,d,type:d.type,end:false,msg:''});
+  if(d.type==='fuse')initFuse();else if(d.type==='sync')initSync();else if(d.type==='jam')initJam();else if(d.type==='panel')initPanel();
+  renderPuz();openModal('puz');
+}
+function pzHead(){const d=pz.d,I=DEVINFO[d.key];
+  return '<h2>'+I.name+' <span class="dim">'+'★'.repeat(d.diff)+'</span></h2><p class="pzinfo">'+I.info+'</p><p>'+I.tip+'</p>'}
+function pzDone(){pz.end=true;setTimeout(()=>{if(!pz.on)return;pz.on=false;closeModal();completeDev(pz.d)},350)}
+function cancelPuz(){pz.on=false;closeModal()}
+function renderPuz(){
+  const f=pz.foot||'<button class="btn" id="pcancel">Step back (Esc)</button>';
+  let body='';
+  if(pz.type==='fuse'){
+    body='<p class="dim">Socket:</p><div class="socket"><i style="background:'+FC[pz.target[0]]+'"></i><i style="background:'+FC[pz.target[1]]+'"></i></div>'+
+      '<p class="dim" style="margin-top:8px">Spare fuses:</p><div class="fuses">'+pz.opts.map((o,i)=>'<button class="fuse'+(pz.burnt[i]?' burnt':'')+'" data-i="'+i+'" aria-label="Fuse '+(i+1)+'"><i style="background:'+FC[o[0]]+'"></i><i style="background:'+FC[o[1]]+'"></i></button>').join('')+'</div>';
+  }else if(pz.type==='sync'){
+    body='<div class="gauge"><div class="zone" id="gz"></div><div class="needle" id="gn"></div></div><div class="row"><button class="btn" id="gsync">SYNC (Space)</button><span id="gcount" class="dim"></span></div>';
+  }else if(pz.type==='jam'){
+    body='<div class="debris"><div class="ring"></div>'+pz.pieces.map(q=>'<button class="deb'+(q.gone?' gone':'')+(q.shake?' shake':'')+'" data-i="'+q.i+'" aria-label="'+q.kind+'" style="left:'+(q.x-q.w/2)+'px;top:'+(q.y-q.h/2)+'px;width:'+q.w+'px;height:'+q.h+'px;background:'+q.col+';border-radius:'+(q.kind==='leaf'?'50%':'3px')+';transform:rotate('+q.rot+'deg);z-index:'+q.z+'"></button>').join('')+'</div>';
+  }else if(pz.type==='panel'){
+    body='<div class="lamps">'+pz.sw.map(v=>'<div class="lamp'+(v?' on':'')+'"></div>').join('')+'</div><div class="sws">'+pz.sw.map((v,i)=>'<button class="sw'+(v?' on':'')+'" data-i="'+i+'" aria-label="Switch '+(i+1)+'"><b></b></button>').join('')+'</div><p class="dim">Flips: '+pz.moves+'</p>';
+  }
+  $('m-puz').innerHTML=pzHead()+body+'<div class="pzmsg" id="pzm">'+pz.msg+'</div><div class="row">'+f+'</div>';
+  $('pcancel').onclick=cancelPuz;
+  const q=$('m-puz');
+  q.querySelectorAll('.fuse').forEach(b=>b.onclick=()=>fuseClick(+b.dataset.i));
+  q.querySelectorAll('.deb').forEach(b=>b.onclick=()=>debClick(+b.dataset.i));
+  q.querySelectorAll('.sw').forEach(b=>b.onclick=()=>panelClick(+b.dataset.i));
+  const gs=$('gsync');if(gs)gs.onclick=syncPress;
+}
+function pzMsg(m){pz.msg=m;const e=$('pzm');if(e)e.textContent=m}
+// fuse
+function initFuse(){
+  const n=pz.d.diff>=3?5:pz.d.diff===2?4:3,a=(rnd()*5)|0;let b=(rnd()*5)|0;if(b===a)b=(b+1)%5;
+  const opts=[[a,b]];let guard=0;
+  while(opts.length<n&&guard++<200){let o;
+    if(pz.d.diff===1)o=[(rnd()*5)|0,(rnd()*5)|0];
+    else{const r=rnd();o=r<.4?[a,(rnd()*5)|0]:r<.8?[(rnd()*5)|0,b]:[b,a]}
+    if(!opts.some(q=>q[0]===o[0]&&q[1]===o[1]))opts.push(o)}
+  opts.sort(()=>rnd()-.5);
+  pz.target=[a,b];pz.opts=opts;pz.burnt=opts.map(()=>false);
+}
+function fuseClick(i){
+  if(!pz.on||pz.end||pz.burnt[i])return;const o=pz.opts[i];
+  if(o[0]===pz.target[0]&&o[1]===pz.target[1]){sfx(660,.1,'triangle',.04);pzMsg('Click. The fuse seats and the lamp lights.');pzDone()}
+  else{pz.burnt[i]=true;sfx(110,.15,'sawtooth',.05);P.inv=0;takeDamage(3);pz.msg='Pop! Wrong fuse: it burns out. Check the bands and their order.';if(pz.on)renderPuz()}
+}
+// sync gauge
+function initSync(){Object.assign(pz,{hits:0,need:3,ph:0,speed:1.7,zw:.26,pos:.5,foot:'<button class="btn" id="pcancel">Step back (Esc)</button>'})}
+function syncPress(){
+  if(!pz.on||pz.type!=='sync'||pz.end)return;
+  if(Math.abs(pz.pos-.5)<pz.zw/2){pz.hits++;pz.zw=Math.max(.1,pz.zw-.06);pz.speed*=1.25;sfx(500+pz.hits*120,.1,'triangle',.04);
+    if(pz.hits>=pz.need){pzMsg('The needles meet: A and B are in phase.');pzDone()}else pzMsg('In phase! Again, it is getting quicker.')}
+  else{pz.hits=0;pz.zw=.26;pz.speed=1.7;sfx(110,.15,'sawtooth',.05);pzMsg('Out of phase. The gears slip: start again.')}
+}
+// jam
+function initJam(){
+  const kinds=[['stick',96,9,'#6b4a2a'],['stick',84,8,'#7a5a33'],['leaf',38,24,'#4a8a3a'],['leaf',34,22,'#6bb04a'],['bolt',32,14,'#8a8a90']];
+  const anchors=[[130,66],[168,82],[150,104],[190,52],[112,96]],zs=[1,2,3,4,5].sort(()=>rnd()-.5);
+  pz.pieces=kinds.map((k,i)=>({i,kind:k[0],w:k[1],h:k[2],col:k[3],x:anchors[i][0]+(rnd()-.5)*16,y:anchors[i][1]+(rnd()-.5)*12,rot:Math.round((rnd()-.5)*100),z:zs[i],r:Math.max(k[1],k[2])*.4,gone:false,shake:false}));
+}
+function debClick(i){
+  if(!pz.on||pz.end)return;const q=pz.pieces[i];if(q.gone)return;
+  const blocked=pz.pieces.some(o=>!o.gone&&o.z>q.z&&Math.hypot(o.x-q.x,o.y-q.y)<q.r+o.r);
+  if(blocked){q.shake=true;sfx(120,.1,'square',.04);pz.msg='Stuck. Something lies on top of it.';renderPuz();q.shake=false;return}
+  q.gone=true;sfx(420,.08,'triangle',.04);
+  if(pz.pieces.every(o=>o.gone)){pz.msg='The teeth are clear. The chain moves.';renderPuz();pzDone()}
+  else{pz.msg=pz.pieces.filter(o=>!o.gone).length+' pieces left.';renderPuz()}
+}
+// breaker panel: each switch also flips its right-hand neighbour
+function pnlFlip(i){pz.sw[i]=!pz.sw[i];const j=(i+1)%pz.n;pz.sw[j]=!pz.sw[j]}
+function initPanel(){
+  pz.n=pz.d.diff<=1?3:4;pz.sw=Array(pz.n).fill(true);pz.moves=0;let t=0;
+  do{for(let k=0;k<pz.n*2;k++)pnlFlip((rnd()*pz.n)|0)}while(pz.sw.every(Boolean)&&t++<20);
+  if(pz.sw.every(Boolean))pnlFlip(0);
+}
+function panelClick(i){
+  if(!pz.on||pz.end)return;pnlFlip(i);pz.moves++;sfx(380,.05,'square',.03);
+  if(pz.sw.every(Boolean)){pz.msg='All lamps green. The breaker holds.';renderPuz();pzDone()}else renderPuz();
+}
+function tickPuz(dt){
+  if(!pz.on||pz.end||pz.type!=='sync')return;
+  pz.ph+=dt*pz.speed;pz.pos=.5+.5*Math.sin(pz.ph);
+  const n=$('gn'),z=$('gz');if(n)n.style.left=(pz.pos*100)+'%';
+  if(z){z.style.left=((.5-pz.zw/2)*100)+'%';z.style.width=(pz.zw*100)+'%'}
+  const c=$('gcount');if(c)c.textContent='Locked: '+pz.hits+'/'+pz.need;
+}
 const WCOL=['#e84b4b','#4bd0e8','#f0d24a','#7ad05a','#c46ae8','#f08a3a'];
 const wire={on:false};
-function startWire(title,pairs,pre,tmax,onWin,onFail){
+function startWire(title,pairs,pre,tmax,onWin,onFail,info){
   const perm=[...Array(pairs).keys()];for(let i=pairs-1;i>0;i--){const j=(rnd()*(i+1))|0;[perm[i],perm[j]]=[perm[j],perm[i]]}
   const done=Array(pairs).fill(false);const idx=[...Array(pairs).keys()].sort(()=>rnd()-.5);for(let k=0;k<pre;k++)done[idx[k]]=true;
-  Object.assign(wire,{on:true,pairs,perm,done,sel:-1,miss:0,t:tmax,max:tmax,onWin,onFail,title,pre,end:false});
+  Object.assign(wire,{on:true,pairs,perm,done,sel:-1,miss:0,t:tmax,max:tmax,onWin,onFail,title,pre,info:info||'',end:false});
   renderWire();openModal('wire');
 }
 function renderWire(){
@@ -621,7 +846,7 @@ function renderWire(){
   }
   for(let r=0;r<w.pairs;r++){const c=w.perm[r],yr=step*r+step/2;
     nodes+=`<button class="node${w.done[c]?' done':''}" style="--c:${WCOL[c]};left:238px;top:${yr-9}px" data-side="R" data-c="${c}" aria-label="Right terminal ${r+1}"></button>`}
-  $('m-wire').innerHTML=`<h2>${w.title}</h2><p>Join each colour on the left to its match on the right. ${w.pre?'<span class="good">'+w.pre+' wire'+(w.pre>1?'s':'')+' pre-linked by your Tech skill.</span>':''}</p>
+  $('m-wire').innerHTML=`<h2>${w.title}</h2>${w.info?'<p class="pzinfo">'+w.info+'</p>':''}<p>Join each colour on the left to its match on the right. ${w.pre?'<span class="good">'+w.pre+' wire'+(w.pre>1?'s':'')+' pre-linked by your Tech skill.</span>':''}</p>
   <div class="tbar"><div id="wt" style="width:${w.t/w.max*100}%"></div></div>
   <div id="wireArea"><svg width="260" height="150">${svg}</svg>${nodes}</div>
   <div class="row"><span id="wm" class="dim">Mistakes: ${w.miss}/3</span><span style="flex:1"></span><button class="btn" id="wcancel">Step back (Esc)</button></div>`;
@@ -648,7 +873,7 @@ function tickWire(dt){
 
 /* =====================  UI: modals  ===================== */
 function openModal(id){modal=id;$('ov').style.display='flex';document.querySelectorAll('.mod').forEach(m=>m.style.display='none');$('m-'+id).style.display='block'}
-function closeModal(){modal=null;$('ov').style.display='none';document.querySelectorAll('.mod').forEach(m=>m.style.display='none')}
+function closeModal(){pz.on=false;modal=null;$('ov').style.display='none';document.querySelectorAll('.mod').forEach(m=>m.style.display='none')}
 function portrait(cls,sc){const c=document.createElement('canvas');c.width=64;c.height=64;const g=c.getContext('2d');g.imageSmoothingEnabled=false;g.translate(32,54);g.scale(sc,sc);drawHero(g,cls,0.3,0,false,0);return c}
 function showClassSelect(first){
   const el=$('m-class');
@@ -691,7 +916,7 @@ function showStats(){
   openModal('stats');$('sc').onclick=()=>closeModal();
 }
 function showTech(){
-  const tl=effTech(),rowsT=[1,2,3].map(t=>{const pairs=2+t,pre=Math.min(Math.max(0,pairs-2),Math.floor((tl-1)/2));return`<tr><td>Gate tier ${t}</td><td>${pairs} wires</td><td>${pre} pre-linked</td><td>${20+pairs*3+tl*2}s</td></tr>`}).join('');
+  const tl=effTech(),rowsT=[1,2,3].map(t=>{const pairs=2+t,pre=Math.min(Math.max(0,pairs-2),Math.floor((tl-1)/2));return`<tr><td>${t===1?'Circuit breaker':'Gate tier '+t}</td><td>${pairs} wires</td><td>${pre} pre-linked</td><td>${20+pairs*3+tl*2}s</td></tr>`}).join('');
   const nxt=Math.pow(techLvl(),2)*CONFIG.techXpUnit;
   $('m-tech').innerHTML=`<h2>Tech skill – level ${techLvl()}${techBonusRing()?' (+'+techBonusRing()+' ring)':''}</h2>
   <p>Repair gates and dormant machines to grow your electronics skill. It carries across every class. XP ${save.techXp}/${nxt}.</p>
@@ -704,7 +929,7 @@ function showBook(){
   <p>The wild and the machines once kept time together. Then ${CONFIG.villain} bent the laws of motion and rewired the world around its own mind. Gears rust, shots drift, and the ground forgets how to hold you.</p>
   <p>You are a Mender. Grow strong, repair what you can, and find the Corrupted Core in the far north. Then decide what to rebuild.</p>
   <h3>Zones</h3><p>${ZONES.map(z=>'<span class="warn">'+z.name+'</span>: '+z.note).join('<br>')}</p>
-  <h3>Tips</h3><p class="dim">Rusted gates seal each ring of the world, with four gates per ring. Pick any. Every class can carry any item, but only its own weapon type can be equipped, so use the Vault at the hub to pass gear between classes. R recalls you to the hub, where you heal.</p><button class="btn" id="bc">Close</button>`;
+  <h3>Tips</h3><p class="dim">The Mossy Shallows have one gate out, driven by four gears (A to D). Pull the main lever on the west wall, then follow the cables, shafts and gear chains from gear to gear. Amber lamps mark repairs you can do now; red ones are waiting on something else. The outer rings are sealed by rusted gates, four per ring: pick any. Every class can carry any item, but only its own weapon type can be equipped, so use the Vault at the hub to pass gear between classes. R recalls you to the hub, where you heal.</p><button class="btn" id="bc">Close</button>`;
   openModal('book');$('bc').onclick=()=>closeModal();
 }
 function showMenu(){
@@ -749,7 +974,7 @@ function slotClick(z,i,right){
 document.addEventListener('click',e=>{const s=e.target.closest('.slot[data-z]');if(s){slotClick(s.dataset.z,+s.dataset.i,false)}});
 document.addEventListener('contextmenu',e=>{const s=e.target.closest('.slot[data-z]');if(s){e.preventDefault();slotClick(s.dataset.z,+s.dataset.i,true)}else if(e.target.id==='cv')e.preventDefault()});
 
-let lastZT='';
+let lastZT='',lastPW='';
 const hpf=$('hpf'),hpt=$('hpt'),enf=$('enf'),ent=$('ent');
 function updateHUD(){
   if(dirtyInv)renderSlots();
@@ -760,6 +985,8 @@ function updateHUD(){
   const zt=z.name+(!save.restored&&z.anom?'<small>'+z.note+'</small>':save.restored?'<small>Balance restored</small>':'');
   if(zt!==lastZT){lastZT=zt;$('zoneTag').innerHTML=zt}
   $('prompt').textContent=(interact&&!modal)?interact.txt:'';
+  const pw=$('power');
+  if(running&&!door.open&&!door.opening){const ob=objective(),t=devDone()+'|'+ob;if(t!==lastPW){lastPW=t;pw.innerHTML='⚙ Gate repairs '+devDone()+'/'+D_TOTAL+'<small style="display:block;font-size:6px;color:#eadfc4;margin-top:3px">'+ob+'</small>'}pw.style.display='block'}else pw.style.display='none';
   const b=$('boss');
   if(bossObj&&bossAwake&&enemies.includes(bossObj)){b.style.display='block';$('bossName').textContent=CONFIG.villain;$('bossFill').style.width=clamp(bossObj.hp/bossObj.max*100,0,100)+'%'}
   else b.style.display='none';
@@ -773,6 +1000,9 @@ function drawMini(){
   const mark=(x,y,c,s)=>{const px=x/TS-ox,py=y/TS-oy;if(px<0||py<0||px>140||py>62)return;g.fillStyle=c;g.fillRect(Math.round(px)-(s>>1),Math.round(py)-(s>>1),s,s)};
   mark(HUB.x,HUB.y,'#9a6ae8',4);if(bossObj)mark(BOSSPOS.x,BOSSPOS.y,'#ff3a5a',4);
   for(const t of terms)if(!t.done&&seen[t.ty*W+t.tx])mark(t.x,t.y,'#e8d84a',2);
+  for(const v of devs)if(!v.done&&seen[Math.floor(v.y/TS)*W+Math.floor(v.x/TS)])mark(v.x,v.y,reqOk(v)?'#f0b24a':'#8a5a22',3);
+  for(const q of gears)mark(q.x,q.y,'#5ab6e8',3);
+  if(!door.open)mark(door.x,door.y,'#e0603a',4);
   for(const e of enemies){if(Math.hypot(e.x-P.x,e.y-P.y)<170)mark(e.x,e.y,'#ff6a4a',2)}
   mark(P.x,P.y,'#ffffff',3);
 }
@@ -855,6 +1085,118 @@ function drawGateGear(c,g,t){
   for(let i=0;i<g.tier;i++)R(c,-6+i*5,9,3,3,'#e8d84a');
   c.restore();
 }
+function drawGear(c,x,y,rot,p,standby){
+  c.save();c.translate(x,y);
+  if(p>0){c.globalAlpha=.18+.22*p;c.fillStyle='#7ad05a';c.beginPath();c.arc(0,0,23,0,TAU);c.fill();c.globalAlpha=1}
+  c.fillStyle='#3a2a1e';c.beginPath();c.arc(0,0,19,0,TAU);c.fill();
+  for(let i=0;i<10;i++){const a=i/10*TAU+rot;c.save();c.translate(Math.cos(a)*19,Math.sin(a)*19);c.rotate(a);R(c,-3,-3,6,6,p>0?'#a8742f':'#6e4a26');c.restore()}
+  c.fillStyle=p>0?'#8a5a2a':'#6a4420';c.beginPath();c.arc(0,0,15,0,TAU);c.fill();
+  c.fillStyle='#2a1c12';c.beginPath();c.arc(0,0,6,0,TAU);c.fill();
+  for(let i=0;i<3;i++){const a=i/3*TAU+rot;R(c,Math.cos(a)*10-1,Math.sin(a)*10-1,3,3,'#2a1c12')}
+  const bl=Math.sin(performance.now()/250)>0;
+  R(c,-1,-1,3,3,p>0?'#7ad05a':standby?(bl?'#f0b24a':'#8a5a22'):(bl?'#ff4a3a':'#802018'));
+  c.restore();
+}
+function drawCog(c,x,y,r,rot,col,dark){
+  c.fillStyle=dark;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();
+  const n=Math.max(6,Math.round(r*.9));
+  for(let i=0;i<n;i++){const a=i/n*TAU+rot;R(c,x+Math.cos(a)*r-1.5,y+Math.sin(a)*r-1.5,3,3,col)}
+  c.fillStyle=col;c.beginPath();c.arc(x,y,r*.62,0,TAU);c.fill();
+  c.fillStyle=dark;c.beginPath();c.arc(x,y,r*.22,0,TAU);c.fill();
+}
+const gp=o=>[o.x,o.y],dp=d=>[d.x,d.y-6],tp=(ox,oy)=>[(C+ox)*TS,(C+oy)*TS];
+const GATE_A=Math.atan2(door.y-HUB.y,door.x-HUB.x),GU=[-Math.sin(GATE_A),Math.cos(GATE_A)],GN=[Math.cos(GATE_A),Math.sin(GATE_A)];
+const gateL=[door.x-GU[0]*19,door.y-GU[1]*19],gateR=[door.x+GU[0]*19,door.y+GU[1]*19],gateC=[door.x,door.y];
+const WIRES=[
+ {pts:[dp(D.M),tp(-14.6,-4),dp(D.bA)],st:()=>D.M.done?1:0},
+ {pts:[dp(D.M),tp(-14.6,4),dp(D.bB)],st:()=>D.M.done?1:0},
+ {pts:[dp(D.bA),tp(-10,-4),gp(G.A)],st:()=>D.bA.done?1:0},
+ {pts:[dp(D.bB),tp(-10,4),gp(G.B)],st:()=>D.bB.done?1:0},
+ {pts:[gp(G.A),tp(-8,-8),dp(D.S),tp(-8,8),gp(G.B)],st:()=>D.S.done?1:(D.bA.done&&D.bB.done?2:0)},
+ {pts:[gp(G.B),tp(-10,10.5),tp(-.4,10.5)],st:()=>D.bB.done?1:0},
+ {pts:[tp(.4,10.5),tp(9,10.5),tp(9,3),gp(G.D)],st:()=>D.K.done&&D.bB.done?1:0},
+ {pts:[gp(G.D),tp(12.9,-8),gateR],st:()=>D.K.done&&D.bB.done?1:0},
+ {pts:[tp(7,8),tp(7,-10),tp(11.88,-10),gateC],st:()=>breakersOn()>0?1:0}
+];
+for(const k of EK)WIRES.push({pts:[dp(D[k]),tp(7,D[k].oy)],st:()=>D[k].done?1:0});
+const KJ=[tp(-.4,10.5),tp(.4,10.5)];
+const COGS=(()=>{const a=gp(G.A),b=gp(G.C),L=Math.hypot(b[0]-a[0],b[1]-a[1]),n=9,rc=(L-36+n-1)/(2*n),ux=(b[0]-a[0])/L,uy=(b[1]-a[1])/L,o=[];
+  for(let i=0;i<n;i++){const t=18+rc+i*(2*rc-1);o.push({x:a[0]+ux*t,y:a[1]+uy*t,r:rc-.5})}return o})();
+D.J.x=COGS[4].x;D.J.y=COGS[4].y+8;
+function scr(list){return list.map(q=>[Math.round(q[0]-camX),Math.round(q[1]-camY)])}
+function strokeP(c,pts,w,col){c.strokeStyle=col;c.lineWidth=w;c.beginPath();pts.forEach((q,i)=>i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]));c.stroke()}
+function drawWire(c,list,st,ti){
+  const pts=scr(list);c.lineCap='round';c.lineJoin='round';c.setLineDash([]);
+  strokeP(c,pts,4,'#1b140e');
+  if(st===1){c.setLineDash([5,5]);c.lineDashOffset=-ti*26;strokeP(c,pts,2,'#7ad05a');c.setLineDash([])}
+  else if(st===2)strokeP(c,pts,2,Math.sin(ti*7)>0?'#f0b24a':'#8a5a22');
+  else strokeP(c,pts,2,'#6a2a20');
+}
+function drawShaftBar(c,a,b,on,ph){
+  const p=scr([a,b]),x1=p[0][0],y1=p[0][1],x2=p[1][0],y2=p[1][1],L=Math.hypot(x2-x1,y2-y1),ux=(x2-x1)/L,uy=(y2-y1)/L;
+  c.lineCap='butt';c.setLineDash([]);strokeP(c,p,8,'#1b140e');strokeP(c,p,5,on?'#9a9aa4':'#5a5a62');
+  c.strokeStyle='#33333a';c.lineWidth=2;
+  for(let t=((ph%10)+10)%10;t<L;t+=10){c.beginPath();c.moveTo(x1+ux*t-uy*3,y1+uy*t+ux*3);c.lineTo(x1+ux*t+uy*3,y1+uy*t-ux*3);c.stroke()}
+  for(let t=30;t<L-20;t+=60){R(c,x1+ux*t-3,y1+uy*t-3,6,6,'#3a2a1e');R(c,x1+ux*t-1,y1+uy*t-1,2,2,'#8a5a2a')}
+}
+function drawSystem(c,ti){
+  c.save();
+  for(const w of WIRES)drawWire(c,w.pts,w.st(),ti);
+  if(D.K.done)drawWire(c,KJ,D.bB.done?1:0,ti);
+  else{const q=scr([tp(-.4,10.5),tp(.4,10.5)]);R(c,q[0][0]-3,q[0][1]-1,4,3,'#d08a4a');R(c,q[1][0],q[1][1]-1,4,3,'#d08a4a');
+    if(Math.sin(ti*13+1)>.55)R(c,q[0][0]+2,q[0][1]-2,3,3,'#fff6c0');if(Math.sin(ti*11)>.7)R(c,q[1][0]-2,q[1][1]-3,2,2,'#ffd060')}
+  // shaft C -> gate (left leaf drive)
+  drawShaftBar(c,gp(G.C),gateL,G.C.w>.1,shaftPh);
+  // gear chain A -> C
+  const jam=!D.J.done;
+  COGS.forEach((g,i)=>{const x=Math.round(g.x-camX),y=Math.round(g.y-camY);if(x<-30||y<-30||x>670||y>390)return;
+    const rot=(i%2?-1:1)*chainRot+i*.3+(jam&&i>=3&&i<=5?Math.sin(ti*18+i)*.04:0);
+    drawCog(c,x,y,g.r,rot,D.J.done?'#a8742f':'#6e4a26','#2a1c12')});
+  if(jam){const j=COGS[4],x=Math.round(j.x-camX),y=Math.round(j.y-camY);
+    c.lineCap='round';strokeP(c,[[x-18,y-6],[x+16,y+8]],4,'#6b4a2a');strokeP(c,[[x-12,y+9],[x+14,y-9]],3,'#7a5a33');
+    c.fillStyle='#4a8a3a';c.beginPath();c.ellipse(x+3,y+1,9,5,.6,0,TAU);c.fill();c.fillStyle='#6bb04a';c.beginPath();c.ellipse(x-6,y-3,7,4,-.5,0,TAU);c.fill();R(c,x+8,y-6,7,4,'#8a8a90')}
+  // gears
+  for(const g of gears){const x=Math.round(g.x-camX),y=Math.round(g.y-camY);if(x<-50||y<-60||x>690||y>420)continue;
+    drawGear(c,x,y,g.rot,gearOn[g.key]()||door.opening?1:0,D.M.done);
+    c.font='8px "Press Start 2P",monospace';c.textAlign='center';c.fillStyle='#000';c.fillText(g.key,x+1,y-27);c.fillStyle='#e8d84a';c.fillText(g.key,x,y-28)}
+  c.restore();
+  drawDoor(c,door,ti);
+}
+function drawDoor(c,g,t){
+  const x=g.x-camX,y=g.y-camY;if(x<-170||y<-170||x>810||y>530)return;
+  const an=g.open?1:g.anim||0,th=Math.sin(Math.min(1,an)*Math.PI/2)*1.75;
+  c.save();c.translate(Math.round(x),Math.round(y));c.lineCap='round';
+  for(const s of [-1,1]){
+    const hx=GU[0]*19*s,hy=GU[1]*19*s,co=Math.cos(th),si=Math.sin(th);
+    const dx=-GU[0]*s*co+GN[0]*si,dy=-GU[1]*s*co+GN[1]*si;
+    const ex=hx+dx*20,ey=hy+dy*20;
+    strokeP(c,[[hx,hy],[ex,ey]],9,'#1b140e');strokeP(c,[[hx,hy],[ex,ey]],7,'#6a4a2a');strokeP(c,[[hx,hy],[ex,ey]],2,'#8a8a94');
+    for(let k=1;k<4;k++){const px=hx+dx*5*k,py=hy+dy*5*k;R(c,px-1,py-1,2,2,'#2a1c12')}
+    drawCog(c,hx,hy,5,(s>0?1:-1)*(G.C.rot+G.D.rot),'#9a9aa4','#2a1c12')}
+  if(an<.2){
+    R(c,-14,-8,28,16,'#1b140e');R(c,-13,-7,26,14,'#3a2a1e');
+    R(c,-11,-5,4,4,gearOn.C()?'#7ad05a':'#802018');R(c,-11,1,4,4,gearOn.D()?'#7ad05a':'#802018');
+    const n=breakersOn();for(let i=0;i<5;i++)R(c,-4+i*4,-2,3,5,i<n?'#7ad05a':'#802018');
+  }
+  c.restore();
+}
+function drawDev(c,d,ti){
+  const lk=!reqOk(d),on=d.done,ok=!lk&&!on,bl=Math.sin(ti*5+d.id)>0;
+  const lamp=on?'#7ad05a':lk?'#802018':(bl?'#f0b24a':'#8a5a22');
+  R(c,-7,-2,14,2,'rgba(0,0,0,.3)');
+  if(d.type==='lever'){
+    R(c,-8,-20,16,20,'#1b140e');R(c,-7,-19,14,18,'#5c4a3a');R(c,-2,-15,4,12,'#1b140e');
+    const ky=on?-16:-6;R(c,-1,ky,2,on?5:6,'#9a9aa4');R(c,-3,ky-2,6,4,on?'#7ad05a':'#c8452f');R(c,-6,-19,3,3,lamp);return}
+  if(d.type==='sync'){
+    c.fillStyle='#1b140e';c.beginPath();c.arc(0,-10,9,0,TAU);c.fill();c.fillStyle='#d8d0c0';c.beginPath();c.arc(0,-10,7,0,TAU);c.fill();
+    R(c,-1,-16,2,3,'#7ad05a');const a=on?-Math.PI/2:-Math.PI/2+Math.sin(ti*3)*.9;strokeP(c,[[0,-10],[Math.cos(a)*6,-10+Math.sin(a)*6]],2,'#c8452f');R(c,5,-4,3,3,lamp);return}
+  if(d.type==='jam'||d.type==='cable'){ // marker post beside the broken spot
+    R(c,-1,-12,2,12,'#3a2a1e');R(c,-4,-14,8,4,'#1b140e');R(c,-3,-13,6,2,lamp);return}
+  R(c,-7,-13,14,12,'#1b140e');R(c,-6,-12,12,10,on?'#4a6a4a':'#5c4a3a');R(c,-5,-11,10,3,'#1b140e');R(c,-4,-10,8,1,lamp);
+  if(d.type==='fuse'){R(c,-3,-7,2,4,on?'#e8d84a':'#222');R(c,1,-7,2,4,on?'#e8d84a':'#222')}
+  else if(d.type==='panel'){for(let i=0;i<3;i++)R(c,-4+i*3,-7,2,4,on?'#7ad05a':(i%2?'#c8452f':'#9a9aa4'))}
+  else{R(c,-4,-7,2,4,'#e84b4b');R(c,-1,-7,2,4,'#4bd0e8');R(c,2,-7,2,4,'#f0d24a')}
+}
 function drawTerm(c,t,ti){
   const done=t.done;R(c,-6,-2,12,2,'rgba(0,0,0,.3)');R(c,-6,-12,12,10,done?'#4a6a4a':'#5c4a3a');R(c,-5,-11,10,5,'#1b140e');
   R(c,-4,-10,8,3,done?'#7ad05a':(Math.sin(ti*4+t.id)>0?'#ff6a3a':'#8a3a22'));R(c,-3,-4,2,2,'#e8d84a');R(c,1,-4,2,2,'#6a8ae8');
@@ -895,7 +1237,7 @@ function drawTileGround(c,tx,ty,sx,sy,t,z,ti){
     if(hash2(tx,ty,2)>.5)R(c,sx+2,sy+6,6,3,'#a0602e');if(hash2(tx,ty,4)>.55)R(c,sx+6,sy,8,2,'#5fa84a');if(h>.8)R(c,sx+9,sy+8,4,4,'#4a3220');
     return}
   if(t===T.GATE){const g=gates[gateAt[i]];
-    if(g.open){R(c,sx,sy,TS,TS,pal[(h*3)|0]);R(c,sx+2,sy+2,TS-4,TS-4,'#2a2018')}
+    if(g.open||g.opening){R(c,sx,sy,TS,TS,pal[(h*3)|0]);if(!g.door)R(c,sx+2,sy+2,TS-4,TS-4,'#2a2018')}
     else{R(c,sx,sy,TS,TS,'#4a3a30');R(c,sx,sy,TS,2,'#6a5444');R(c,sx+2,sy+4,2,2,'#2a1c12');R(c,sx+TS-4,sy+TS-6,2,2,'#2a1c12')}
     return}
   const dk=save.restored?'#3f7a35':ZONES[z].dark,h2=hash2(tx,ty,7);
@@ -909,7 +1251,7 @@ function drawTileGround(c,tx,ty,sx,sy,t,z,ti){
 function render(){
   const c=ctx,ti=performance.now()/1000;
   c.imageSmoothingEnabled=false;
-  camX=Math.round(P.x-320);camY=Math.round(P.y-190);
+  camX=Math.round(P.x-320+(shake>0?(rnd()-.5)*shake*2:0));camY=Math.round(P.y-190+(shake>0?(rnd()-.5)*shake*2:0));
   c.fillStyle='#0c1b1f';c.fillRect(0,0,640,360);
   const tx0=Math.floor(camX/TS),ty0=Math.floor(camY/TS),tx1=tx0+41,ty1=ty0+24;
   const drawList=[];
@@ -922,8 +1264,10 @@ function render(){
     else if(t===T.VOID&&tx%4===0&&ty%4===0&&hash2(tx>>2,ty>>2,99)>.8){
       const by=Math.round(Math.sin(ti+tx)*3);R(c,sx+2,sy+by+4,20,8,'#5a4632');R(c,sx+4,sy+by+12,14,4,'#3a2c20');R(c,sx+2,sy+by+1,20,4,'#4a8a3a');R(c,sx+6,sy+by-1,6,2,'#6bb04a');R(c,sx+12,sy+by+2,3,5,'#3fa0e8')}
   }
-  for(const g of gates)drawGateGear(c,g,ti);
+  drawSystem(c,ti);
+  for(const g of gates){if(g.dead||g.door)continue;drawGateGear(c,g,ti)}
   drawHubDecorQueue(drawList,ti);
+  for(const v of devs){const x=v.x-camX,y=v.y-camY;if(x<-20||y<-30||x>660||y>380)continue;drawList.push({y:v.y,f:g=>{g.save();g.translate(Math.round(x),Math.round(y));drawDev(g,v,ti);g.restore()}})}
   for(const t of terms){const x=t.x-camX,y=t.y-camY;if(x<-20||y<-20||x>660||y>380)continue;drawList.push({y:t.y,f:g=>{g.save();g.translate(Math.round(x),Math.round(y));drawTerm(g,t,ti);g.restore()}})}
   for(const l of loots){const x=l.x-camX,y=l.y-camY;if(x<-10||y<-10||x>650||y>370)continue;
     drawList.push({y:l.y,f:g=>{const b=Math.round(Math.sin(ti*3+l.t0)*1.5);
@@ -955,7 +1299,8 @@ function drawHubDecorQueue(list,ti){list.push({y:HUB.y-20,f:g=>drawHubDecor(g,ti
 /* =====================  input  ===================== */
 window.addEventListener('keydown',e=>{
   const k=e.key.toLowerCase();
-  if(k==='escape'){if(modal==='wire')cancelWire();else if(modal&&modal!=='class'&&modal!=='dead'&&modal!=='win')closeModal();else if(!modal&&running)showMenu();else if(modal==='win')closeModal();return}
+  if(k==='escape'){if(modal==='puz')cancelPuz();else if(modal==='wire')cancelWire();else if(modal&&modal!=='class'&&modal!=='dead'&&modal!=='win')closeModal();else if(!modal&&running)showMenu();else if(modal==='win')closeModal();return}
+  if(modal==='puz'&&pz.on&&pz.type==='sync'&&(k===' '||k==='enter'||k==='e')){e.preventDefault();syncPress();return}
   if(modal){return}
   if(!running)return;
   keys[k]=true;
@@ -981,6 +1326,7 @@ function frame(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(running&&!modal)update(dt);
   else if(modal==='wire')tickWire(dt);
+  else if(modal==='puz')tickPuz(dt);
   else if(!running){time+=dt;for(const m of motes){m.x-=4*m.z*dt;if(m.x<-4)m.x=644}}
   render();updateHUD();drawMini();
   requestAnimationFrame(frame);
